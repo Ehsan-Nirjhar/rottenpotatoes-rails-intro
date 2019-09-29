@@ -12,6 +12,7 @@ class MoviesController < ApplicationController
 
   def index
     @movies = Movie.all
+    @movies.merge!(Movie.order(params[:sort])) ## sort according to parameter
   end
 
   def new
