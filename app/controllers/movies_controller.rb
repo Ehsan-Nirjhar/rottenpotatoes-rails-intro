@@ -9,9 +9,22 @@ class MoviesController < ApplicationController
     @movie = Movie.find(id) # look up movie by unique ID
     # will render app/views/movies/show.<extension> by default
   end
+  
+  def initialize
+    @all_ratings = Movie.all_ratings
+    super  ##For retaining the stylesheet
+  end
 
   def index
     @movies = Movie.all
+    
+    if (params[:ratings])      ## Checking for selection in tick boxes
+      @ratings = params[:ratings].keys
+    else
+      @ratings = @all_ratings
+    end
+
+    @movies=Movie.where(rating: @ratings)  ## Show movies with selected rating
     @movies.merge!(Movie.order(params[:sort])) ## sort according to parameter clicked
   end
 
